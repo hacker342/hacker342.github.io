@@ -1,7 +1,7 @@
 ---
 title: Настройка Prometheus + Grafana в Docker
 author: Кирьянов Артем
-date: 2021-28-06 11:00:00 +0300
+date: 2021-06-28 11:00:00 +0300
 categories: [it, devops,monitoring]
 tags: [monitoring,grafana,prometheus]
 ---
