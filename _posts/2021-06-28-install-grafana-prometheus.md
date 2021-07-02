@@ -8,7 +8,7 @@ tags: [monitoring,grafana,prometheus]
 
 ## Grafana и Prometheus в Docker.
 
-![graphana](https://devopsme.ru/assets/img/sample/pg.png)
+![graphana](https://devopsme.ru/assets/img/pg.png)
 
 В этой статье я бы хотел рассказать о том, как установить эти инструменты. Я буду писать про установку на сервер. Требования: установленный Docker ну и настроенное окружение, как доступ по ssh и другое по вашему "вкусу".
 
