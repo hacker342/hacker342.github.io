@@ -46,34 +46,34 @@ scrape_configs:
 
 Сохраняем файлик. Теперь о нюансах. Чтобы настроить демона Docker в качестве целевого объекта Prometheus, нам необходимо указать адрес метрики. Лучший способ сделать это-через файл daemon.json, который по умолчанию находится в одном из следующих местоположений. Если файл не существует, создайте его.. Для этого нам необходимо создать в /etc/docker файлик daemon.json. 
 
-```
+```yml
 {
   "metrics-addr" : "0.0.0.0:9323",
   "experimental" : true
 }
 ```
 Останавливаем docker как службу
-```
+```yml
 sudo systemctl stop docker
 ```
 Теперь нам необходимо добавить порт 9323 в зону public для firewall
-```
+```yml
 sudo firewall-cmd --permanent --zone=public --add-port=9323/tcp
 ```
 Перезапускаем сервис
-```
+```yml
 sudo firewall-cmd --reload
 ```
 > В Ubuntu  firewall-cmd не установлен
 > Устанавливаем через apt-get install
 
 После этого запускам docker
-```
+```yml
 sudo docker start docker
 ```
 Теперь можно запустить Prometheus, указав ему наш файлик. 
 Запускаем такую команду: 
-```
+```yml
 docker run -d -p 9090:9090 -v /home/devops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
 ```
 Переходим на сайт http://localhost:9090/targets
@@ -82,15 +82,15 @@ docker и prometheus должны находится в состоянии UP.
 ### Установка Grafana
 
 Пишем такую команду: 
-```
+```yml
 docker run -d --name grafana -p 3000:3000 -v grafana_config:/etc/grafana -v grafana_data:/var/lib/grafana -v grafana_logs:/var/log/grafana grafana/grafana
 ```
 Добавляем порт в firewall
-```
+```yml
 sudo firewall-cmd --permanent --zone=public --add-port=3000/tcp
 ```
 Перезапускаем сервис
-```
+```yml
 sudo firewall-cmd --reload
 ```
 После этого можно перейти по адресу http://ВАШ_IP:3000 и сменить пароль для Grafana
@@ -102,7 +102,7 @@ sudo firewall-cmd --reload
 В ситуациях, когда требуется развертывание Docker, необходимо использовать некоторые дополнительные флаги, чтобы разрешить node_exporter доступ к пространствам имен хоста.
 Имейте в виду, что любые некорневые точки монтирования, которые вы хотите отслеживать, необходимо будет смонтировать в контейнере.
 Если вы запускаете контейнер для мониторинга хоста, укажите аргумент path.rootfs. Этот аргумент должен соответствовать пути в привязке-монтировании корневого узла. node_exporter будет использовать path.rootfs в качестве префикса для доступа к файловой системе хоста.
-```
+```yml
 docker run -d \
   --net="host" \
   --pid="host" \
@@ -111,12 +111,12 @@ docker run -d \
   --path.rootfs=/host
 ```
 Затем необходимо добавить правило для фаервола: 
-```
+```yml
 sudo firewall-cmd --add-port=9100/tcp --permanent
 sudo systemctl restart firewalld
 ```
 Затем добавим в наш prometheus.yml нашу хост-машину, итоговый файлик: 
-```
+```yml
 # my global config
 global:
   scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
